@@ -1,0 +1,13 @@
+name: promoterome
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - python
+    - pysam
+    - h5py
+    - snakemake
+    - numpy
+    - pandas
+    - matplotlib

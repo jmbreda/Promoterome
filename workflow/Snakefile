@@ -1,0 +1,29 @@
+configfile: 'config/config.yaml'
+
+rule all:
+    input:
+        table=expand('results/{genome}/promoterome_pm{window_kb}kb.hdf5',
+                     genome=config['Genome'],
+                     window_kb=config['Window_kb'])
+
+rule filter_promoterome:
+    input:
+        promoterome="/bigdata/jbreda/genome/{genome}/{genome}_promoters.gff.gz",
+        blacklist="resources/Blacklist/lists/{genome}-blacklist.v2.bed.gz"
+    output:
+        table='results/{genome}/promoterome_pm{window_kb}kb_filtered.bed'
+    shell:
+        """
+        python scripts/get_promoterome.py --genome {wildcards.genome} --window_kb {wildcards.window_kb} --promoterome {input.promoterome} --blacklist {input.blacklist} --outfile_table {output.table}
+        """
+
+rule get_OHE_promoterome:
+    input:
+        table='results/{genome}/promoterome_pm{window_kb}kb_filtered.bed'
+    output:
+        tensor='results/{genome}/promoterome_pm{window_kb}kb.hdf5'
+    threads: 1
+    shell:
+        """
+        python scripts/get_promoterome_OneHotEncodedSeq_hdf5.py --genome {wildcards.genome} --infile {input.table} --outfile_hdf5 {output.tensor}
+        """

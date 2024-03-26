@@ -1,0 +1,7 @@
+resources/
+results/
+.snakemake/
+log/
+tmp/
+stderr/
+stdout/

@@ -1,0 +1,17 @@
+Genome:
+  - mm10
+  - hg38
+#  - mm39
+#  - hg19
+
+Promoterome:
+  mm10: mm10_promoters_v2.gff.gz
+  mm39: mm39_promoters_v1.gff.gz
+  hg19: hg19_promoters_v2.gff.gz
+  hg38: hg38_promoters_v1.gff.gz
+
+Window_kb:
+  - 1
+  - 2
+  - 3
+  - 5
