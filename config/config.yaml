@@ -15,3 +15,6 @@ Window_kb:
   - 2
   - 3
   - 5
+
+Max_distance_clustering:
+  - 1000
