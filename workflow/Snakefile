@@ -2,9 +2,12 @@ configfile: 'config/config.yaml'
 
 rule all:
     input:
-        table=expand('results/{genome}/promoterome_pm{window_kb}kb.hdf5',
-                     genome=config['Genome'],
-                     window_kb=config['Window_kb'])
+        expand('results/{genome}/promoterome_pm{window_kb}kb_filtered_clustered_sorted.bed',
+               genome=config['Genome'],
+               window_kb=config['Window_kb'])
+        #table=expand('results/{genome}/promoterome_pm{window_kb}kb.hdf5',
+        #             genome=config['Genome'],
+        #             window_kb=config['Window_kb'])
 
 rule filter_promoterome:
     input:
@@ -17,7 +20,7 @@ rule filter_promoterome:
         python scripts/get_promoterome.py --genome {wildcards.genome} --window_kb {wildcards.window_kb} --promoterome {input.promoterome} --blacklist {input.blacklist} --outfile_table {output.table}
         """
 
-rule cluster_promoters:
+rule cluster_promoterome:
     input:
         promoterome='results/{genome}/promoterome_pm{window_kb}kb_filtered.bed'
     output:
@@ -27,6 +30,16 @@ rule cluster_promoters:
     shell:
         """
         python scripts/cluster_promoterome_by_close_genes.py --infile_promoterome {input.promoterome} --threshold {params.max_distance} --outfile_promoterome {output.promoterome}
+        """
+
+rule sort_promoterome:
+    input:
+        promoterome='results/{genome}/promoterome_pm{window_kb}kb_filtered_clustered.bed'
+    output:
+        promoterome='results/{genome}/promoterome_pm{window_kb}kb_filtered_clustered_sorted.bed'
+    shell:
+        """
+        sort -k1,1 -k2,2n {input.promoterome} > {output.promoterome}
         """
 
 rule get_OHE_promoterome:
