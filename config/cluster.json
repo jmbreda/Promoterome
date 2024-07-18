@@ -1,0 +1,15 @@
+{
+    "__default__" :
+    {
+        "name" : "snakejob",
+        "qos" : "serial",
+        "stdout" : "stdout/slurm-%x-%j",
+        "stderr" : "stderr/slurm-%x-%j",
+        "time" : "06:00:00",
+        "n" : 1,
+        "mem" : "6G",
+        "nodes" : 1,
+        "ntasks" : 1,
+        "cpus-per-task" : 1
+    }
+}

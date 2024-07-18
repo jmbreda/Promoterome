@@ -7,7 +7,7 @@ dependencies:
     - python
     - pysam
     - h5py
-    - snakemake
+    - snakemake=7
     - numpy
     - pandas
     - matplotlib
